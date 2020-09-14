@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+
 
 const SongCreate = (props) => {
+  let history = useHistory(); // v4.0 useHistory hook instead of deprecated HashHistory 
   const [title, setTitle] = useState('');
   const [addSong, { data }] = useMutation(ADD_SONG);
 
@@ -12,9 +14,9 @@ const SongCreate = (props) => {
   const handleSubmit = e => {
     e.preventDefault();
     addSong({ variables: { title } })
-      .then(() => hashHistory.push('/')); //todo router history
+      .then(() => history.push('/')); //todo router history
   };
-  return ( 
+  return ( // nothing is rendered to DOM
     <div>
       <Link to="/">Back</Link>
       <h3>Create a New Song</h3>
