@@ -1,5 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import SongList from './components/SongList';
+import App from './components/App';
+import SongCreate from './components/SongCreate';
+import { BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 import { ApolloClient, InMemoryCache, gql, useQuery, createHttpLink, ApolloProvider } from '@apollo/client';
 
@@ -54,7 +58,13 @@ const client = new ApolloClient({
 const Root = () => {
   return (
     <ApolloProvider client={client}>
-      <div>Lyrical</div>
+      <Router >
+        <Switch>
+          <Route exact path='/' component={App}/>
+          <Route path='/' component={SongList}/> // todo 
+          <Route exact path="songs/new" component={SongCreate} />
+        </Switch>
+      </Router>
     </ApolloProvider>
   );
 };

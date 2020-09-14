@@ -31,7 +31,6 @@
     "nodemon": "*",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-router": "^5.2.0",
     "style-loader": "^1.2.1",
@@ -45,6 +44,8 @@
     "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
-    "@babel/runtime": "^7.11.2"
+    "@babel/runtime": "^7.11.2",
+    "react": "^16.13.1",
+    "react-router-dom": "^5.2.0"
   }
 }
