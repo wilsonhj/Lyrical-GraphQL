@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';
+import query from '../queries/fetchSongs';
 
 
-const SongCreate = (props) => {
+const SongCreate = () => {
   let history = useHistory(); // v4.0 useHistory hook instead of deprecated HashHistory 
   const [title, setTitle] = useState('');
   const [addSong, { data }] = useMutation(ADD_SONG);
 
   const handleChange = e => {
-    setTitle({ title: e.target.value });
+    setTitle(e.target.value);
   };
   const handleSubmit = e => {
     e.preventDefault();
-    addSong({ variables: { title } })
-      .then(() => history.push('/')); //todo router history
+    addSong({ 
+      variables: { title }, 
+      refetchQueries: [{ query }] })
+      .then(() => history.push('/'));
+    reset();
   };
+
+  const reset = () => setTitle("");
+
   return ( // nothing is rendered to DOM
     <div>
       <Link to="/">Back</Link>

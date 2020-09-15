@@ -1,18 +1,31 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import { Link } from 'react-router-dom'; 
+import query from '../queries/fetchSongs';
 
-const SongList = () => {
-  const { loading, error, data } = useQuery(GET_SONGS);
+const SongList = (props) => {
+  const { loading, error, data } = useQuery(query);
+  const [deleteSong] = useMutation(DELETE_SONG);
+
   if (loading) return 'Loading...';
   if (error) return `Error ${error.message}`;
+
+  const handleSongDelete = (id) => {
+    deleteSong({ // mutate function 
+      variables: { id }, 
+      refetchQueries: [{ query }] // updates DOM immediately
+    });
+  };
 
   return (
     <div>
       <ul className="collection">
-        {data.songs.map(song => 
-          <li key={song.id} className="collection-item">
-            {song.title}
+        {data.songs.map(({ id, title }) => 
+          <li key={id} className="collection-item">
+            {title}
+            <i className="material-icons" onClick={() => handleSongDelete(id)}>
+              delete
+            </i>
           </li>
         )}
       </ul>
@@ -23,34 +36,13 @@ const SongList = () => {
   ); 
 };
 
-const GET_SONGS = gql`
-  query GetSongs {
-    songs {
-      title
+const DELETE_SONG = gql`
+  mutation DeleteSong($id: ID!){
+    deleteSong(id: $id){
       id
     }
   }
 `;
 
+
 export default SongList;
-
-// client
-//   .query({
-//     query: gql`
-//       query GetRates {
-//         rates(current: "USD"){
-//           currency
-//         }
-//       }
-//     `
-//   })
-//   .then(res => console.log(res));
-
-// const EXCHANGE_RATES = gql`
-//   query GetExchangeRates{
-//     rates(currency: "USD"){
-//       currency
-//       rate
-//     }
-//   }
-//   `;
